@@ -18,12 +18,26 @@ class BaseService {
             res.status(500).send(err);
         }
     }
+    async getMyAppointments(req, res) {
+        try {
+            //secure the get appointments for the authenticated user(seller)
+            let authData = req.authData;
+            const buyer = await userRepo.getBuyer({"userId":authData._id});
+            if(!buyer._id)
+                return res.status(401).send("UNAUTHORIZED ACCESS !!!!");
+            let result = await baseRepo.getMyAppointments(buyer._id);
+            res.status(201).send(result);
+        } catch (err) {
+            res.status(500).send(err);
+        }
+    }
     async addAppointment(req, res) {
         try {
             let authData = req.authData;
             const buyer = await userRepo.getBuyer({"userId":authData._id});
             const appointment = req.body;
-            if(!buyer._id || appointment.clientId != buyer._id)
+            appointment.clientId = buyer._id;
+            if(!buyer._id)
                 return res.status(401).send("UNAUTHORIZED ACCESS !!!!");
 
             let result = await baseRepo.addAppointment(appointment);

@@ -9,9 +9,15 @@ class UserService {
         try {
             //Get the user info sent
             const authToken = req.body;
+
             //Read database user
             let user = await usersRepo.getUser({"username": authToken.username});
+            //Check if the login MUST be for the seller only
+            if(authToken.seller && user.type !==2){
+                //Forbidden
+                return res.sendStatus(403);
 
+            }
             //if we found the user
             if (user && user._id) {
                 //get the buyer information
@@ -32,6 +38,7 @@ class UserService {
             }
         } catch (err) {
             console.log(err);
+            res.sendStatus(500)
         }
     }
 
@@ -50,10 +57,12 @@ class UserService {
         try {
             let userAdded = await usersRepo.addUser(user);
             if (userAdded.errmsg)
-                return res.status(301).send(userAdded);
+                return res.status(301).send('Failed');
 
             user._id = userAdded._id;
             let result = await usersRepo.handleUserType(user);
+            if(result.errmsg)
+                return res.status(301).send('Failed');
             res.status(201).send(result);
 
 

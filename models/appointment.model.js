@@ -14,15 +14,13 @@ const AppointmentSchema = new Schema({
         type: String,
         required: true,
     },
-    desc: {
-        type: String,
-    },
-    descAr: {
-        type: String,
-    },
     requestDate: {
         type: String,
         default: new Date()
+    },
+    appointmentDate:{
+        type: String,
+        required:true
     },
     status:{
         type:String, //0- Pending / 1- Accepted / 2- Rejected

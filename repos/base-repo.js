@@ -16,29 +16,14 @@ class BaseRepo {
     async addAppointment(appointment) {
         try {
             const newAppointment = new Appointment(appointment);
-            let time = newAppointment.time.split(' to ');
-            console.log('the time ', time, 'start time is ', time[0], 'end time is', time[1]);
-            let seller = await this.getSeller({"userId": newAppointment.sellerId});
-            let validTimeSlot = false;
-            seller.timeSlots.forEach((singleTimeSlot) => {
-
-                if (singleTimeSlot.startTime ==time[0] && singleTimeSlot.endTime == time[1])
-                    validTimeSlot = true
+            return await newAppointment.save(async (err, addedAppointment) => {
+                if (err)
+                    return console.log(err);
+                let buyer = await this.getBuyer({"userId": appointment.clientId});
+                //attach the appointment id to the buyer
+                buyer.appointments.push(addedAppointment._id);
+                return await this.updateBuyer(buyer);
             });
-            console.log('the valid is ',validTimeSlot)
-            if (validTimeSlot) {
-                console.log('the seller is ', seller)
-
-                return await newAppointment.save(async (err, addedAppointment) => {
-                    if (err)
-                        return console.log(err);
-                    let buyer = await this.getBuyer({"userId": appointment.clientId});
-                    //attach the appointment id to the buyer
-                    buyer.appointments.push(addedAppointment._id);
-                    return await this.updateBuyer(buyer);
-                });
-            } else
-                return "Invalid time slot"
 
         } catch (err) {
             return err
@@ -47,7 +32,7 @@ class BaseRepo {
 
     async updateAppointment(appointment) {
         try {
-            console.log('updating appoinntment to ',appointment)
+            console.log('updating appoinntment to ', appointment)
             return await Appointment.findOneAndUpdate({"_id": appointment._id}, appointment);
 
         } catch (err) {
@@ -127,6 +112,15 @@ class BaseRepo {
     async getAppointments(sellerId) {
         try {
             let appointments = await Appointment.find({"sellerId": sellerId}).populate('clientId');
+            return await appointments;
+        } catch (err) {
+            return err;
+        }
+    }
+
+    async getMyAppointments(clientId) {
+        try {
+            let appointments = await Appointment.find({"clientId": clientId}).populate('sellerId');
             return await appointments;
         } catch (err) {
             return err;

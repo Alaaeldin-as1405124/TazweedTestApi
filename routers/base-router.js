@@ -17,6 +17,10 @@ router.route('/api/appointments/')
     .put(baseService.updateAppointment)
     .get(baseService.getAppointments);
 
+//for buyer to show the buyer his appointments
+router.route('/api/myAppointments/')
+    .get(baseService.getMyAppointments);
+
 router.route('/api/sellers/')
     .get(baseService.getSellers);
 
