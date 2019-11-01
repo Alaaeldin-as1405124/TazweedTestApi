@@ -7,7 +7,7 @@ const AppointmentSchema = new Schema({
         required:true
     },
     sellerId: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'user',
+        type: mongoose.Schema.Types.ObjectId, ref: 'seller',
         required: true
     },
     time: {

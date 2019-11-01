@@ -43,6 +43,7 @@ class BaseService {
             let result = await baseRepo.addAppointment(appointment);
             res.status(201).send(result);
         } catch (err) {
+            console.log(err);
             res.status(500).send(err);
         }
     }

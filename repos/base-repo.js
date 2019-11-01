@@ -16,6 +16,7 @@ class BaseRepo {
     async addAppointment(appointment) {
         try {
             const newAppointment = new Appointment(appointment);
+            console.log('the new appointment is ', newAppointment);
             return await newAppointment.save(async (err, addedAppointment) => {
                 if (err)
                     return console.log(err);
@@ -111,7 +112,7 @@ class BaseRepo {
 
     async getAppointments(sellerId) {
         try {
-            let appointments = await Appointment.find({"sellerId": sellerId}).populate('clientId');
+            let appointments = await Appointment.find({"sellerId": sellerId}).populate('clientId').sort({appointmentDate:1});
             return await appointments;
         } catch (err) {
             return err;
@@ -120,8 +121,7 @@ class BaseRepo {
 
     async getMyAppointments(clientId) {
         try {
-            let appointments = await Appointment.find({"clientId": clientId}).populate('sellerId');
-            return await appointments;
+            return await Appointment.find({"clientId": clientId}).populate('sellerId').sort({appointmentDate:1});
         } catch (err) {
             return err;
         }

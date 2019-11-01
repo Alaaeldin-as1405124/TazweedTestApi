@@ -16,8 +16,8 @@ class UserService {
             if(authToken.seller && user.type !==2){
                 //Forbidden
                 return res.sendStatus(403);
-
             }
+
             //if we found the user
             if (user && user._id) {
                 //get the buyer information
