@@ -2,7 +2,10 @@
 Booking System API, secured using jwt token for authentication
   A node js, mongoDB API which has been made for Tazweed for testing purposes. 
 
-Application Structure
+# Working demo
+http://tazweed.ay-legend.com:8000/api/(routes defined at router)
+
+# Application Structure
 
 /models (mondoDB schemas)
  - appointment.model
