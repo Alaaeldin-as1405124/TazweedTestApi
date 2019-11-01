@@ -22,9 +22,14 @@ const SellerSchema = new Schema({
     },
     timeSlots: [
         {
-            _id: {type: mongoose.Schema.Types.ObjectId, unique: true, default: mongoose.Types.ObjectId},
-            startTime: {type: String, required: true},
-            endTime: {type: String, required: true}
+            startTime: {
+                type: String,
+                required: true,
+            },
+            endTime: {
+                type: String,
+                required: true,
+            }
         }
     ],
 

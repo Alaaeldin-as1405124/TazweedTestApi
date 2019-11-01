@@ -61,8 +61,9 @@ class UserService {
 
             user._id = userAdded._id;
             let result = await usersRepo.handleUserType(user);
+            console.log('the result is',result)
             if(result.errmsg)
-                return res.status(301).send('Failed');
+                return res.status(301).send(result);
             res.status(201).send(result);
 
 
