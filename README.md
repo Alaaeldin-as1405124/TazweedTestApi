@@ -7,7 +7,7 @@ http://tazweed.ay-legend.com:8000/api/(routes defined at router)
 
 # Application Structure
 
-/models (mondoDB schemas)
+/models (mongoDB schemas)
  - appointment.model
  - buyer.model
  - seller.model
